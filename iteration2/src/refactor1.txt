@@ -1,0 +1,28 @@
+Origin code:
+In Arean.cc, the function (line 192)
+CheckForEntityCollision(const ArenaEntity *const ent1,
+                                    const ArenaEntity *const ent2,
+                                    EventCollision *const event,
+                                    double collision_delta){
+  double ent1_x = ent1->get_pos().x;
+  double ent1_y = ent1->get_pos().y;
+  double ent2_x = ent2->get_pos().x;
+  double ent2_y = ent2->get_pos().y;
+  double dist = std::sqrt(
+      std::pow(ent2_x - ent1_x, 2) + std::pow(ent2_y - ent1_y, 2));
+  ...
+}
+
+New code:
+Here we are using temporay variables ent1_x, ent1_y, ent2_x and ent2_y.
+We could replace all these variables with its original call fucntion.
+The new function:
+CheckForEntityCollision(const ArenaEntity *const ent1,
+                                    const ArenaEntity *const ent2,
+                                    EventCollision *const event,
+                                    double collision_delta){
+  double dist = std::sqrt(
+      std::pow(ent2->get_pos().x - ent1->get_pos().x, 2) + 
+      std::pow(ent2->get_pos().y - ent1->get_pos().y, 2));
+  ...
+}

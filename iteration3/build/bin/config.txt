@@ -1,0 +1,40 @@
+# This file contains csci3081w project initialization statistics
+
+basic_set:
+x_dim: 1024
+y_dim: 768
+n_autobots: 5
+n_obstacles: 5
+max_speed: 15
+max_angle: 360
+
+player_robot:
+max_battery: 100.0
+angle_delta: 30
+collision_delta: 1
+heading_angle: 38
+speed: 9
+20.0 500 500 40 230 230 255
+
+# each line contains name, position, color
+# radius is the first value
+# position is the second and third value
+# color is the last four values
+
+homebase 20.0 400 400 255 0 0 255
+
+recharge_station 20.0 500 300 0 128 128 255
+
+autobot:
+0. 20.0 100 100 30 250 30 255
+1. 20.0 100 200 30 250 30 255
+2. 20.0 300 300 30 250 30 255
+3. 20.0 100 400 30 250 30 255
+4. 20.0 100 500 30 250 30 255
+
+obstacles:
+0. 30.0 200 200 255 255 255 255
+1. 20.0 100 300 255 255 255 255
+2. 15.0 400 600 255 255 255 255
+3. 50.0 700 100 255 255 255 255
+4. 65.0 900 650 255 255 255 255

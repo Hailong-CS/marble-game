@@ -1,0 +1,14 @@
+1.The GraphicsArenaViewer::DrawUsingNanoVG() is drawing the the window, number of obstacles, robots and homebase.
+2.This function is called at each iteration of the main loop
+3.It was drawn by the obstacle, since the recharge station is inherenced from obstacle.
+4.There are four kinds of entities in the arena. They are Obstacle1, Recharg Station, Home Base and Robot0. The Obstacle1's base class is Obstalce; the Robot0's base class is Arena_mobile_Entity; the Home Base's base class is Arena_immobile_Entity; the Recharge Station's base class is Obstacle.
+5.The function CheckForEntityCollision will check the collison.
+6.When the mobile entity is close enough to immobile entity, the mobile entity will be sent to a  collition event.
+7.The mobile entity is sent to a collision event, and in the CheckForEntityOutOfBounds function that the mobile entity's x position will changeed to the x_dim and the dirction will change to opposite.
+8.The system will check the Euclidean distance between the mobile entity and immobile entity, then it will change the direction accordingly.
+9.The touch sensor is actived when the mobile entity in the arena around the perimeter of the robot, then it will translates to an angle of contact.
+10.The RobotMotionHandler reads the touch sensor, which is used to update the velocity.
+11.The function is UpdatePositon in RobotMotionBehavior.cc, in the GraphicsArenaViewer, the system will then redraw the robot with the new position.
+12.The equation is new_pos.x += cos(ent->heading_angle()*M_PI/180.0)*ent->speed()*dt;
+                   new_pos.y += sin(ent->heading_angle()*M_PI/180.0)*ent->speed()*dt;
+and then call the setter function in robot to set the new position.

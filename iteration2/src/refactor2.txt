@@ -1,0 +1,83 @@
+1. In file home_base.cc, function (line 23)
+HomeBase::HomeBase(const struct robot_params* const params) :
+    Robot(params->radius, 1, params->pos, params->color, 15, 360),
+    collision_delta_(1),
+    heading_angle_(0),
+    motion_handler_(),
+    motion_behavior_(),
+    sensor_touch_() {
+        int rand_ha = rand() % 360 - 180;
+        int rand_speed = (rand() %
+        static_cast <int> (motion_handler_.get_max_speed() - 3)) + 3;
+        set_heading_angle(rand_ha);
+        set_speed(rand_speed);
+    }
+
+The name rand_ha is vague, and I am changing it to rand_heading_angle.
+
+Befor changing, people would not understand what rand_ha could be, because this name doesn't relate to any of our variables. After refactoring, people would knwo that rand_heading_angle would be a variable that generates a random heading angle.
+
+After refactoring code:
+HomeBase::HomeBase(const struct robot_params* const params) :
+    Robot(params->radius, 1, params->pos, params->color, 15, 360),
+    collision_delta_(1),
+    heading_angle_(0),
+    motion_handler_(),
+    motion_behavior_(),
+    sensor_touch_() {
+        int rand_heading_angle = rand() % 360 - 180;
+        int rand_speed = (rand() %
+        static_cast <int> (motion_handler_.get_max_speed() - 3)) + 3;
+        set_heading_angle(rand_heading_angle);
+        set_speed(rand_speed);
+    }
+
+
+
+2. In robot_battery.h, function (line 29)
+double RobotBattery::Deplete(__unused Position old_pos,
+   __unused Position new_pos, __unused double dt) {
+    int dfrc_x, dfrc_y;
+    double dfrc_ds, dfrc_angle;
+    dfrc_x = new_pos.x - old_pos.x;
+    dfrc_y = new_pos.y - old_pos.y;
+    dfrc_ds = sqrt(pow(dfrc_x, 2)+pow(dfrc_y, 2));
+    if (dfrc_ds == 0) {
+        dfrc_angle = 0;
+    } else {
+        dfrc_angle = asin(dfrc_y/dfrc_ds) * M_PI / 180;
+    }
+    charge_ = charge_ - (dfrc_ds * kLINEAR_SCALE_FACTOR
+            + dfrc_angle * kANGULAR_SCALE_FACTOR  + kBASE_DEPLETION) * dt;
+    if (charge_ < 0) {
+        charge_ = 0;
+    }
+    return charge_;
+}
+
+The name dfrc_x, dfrc_y, dfrc_ds and dfrc_angle are too ambigous, I could make them clearer.
+I would change each of them as x_dist, y_dist, plan_dist and angle_difference, which are better refer to.
+
+After refactoring code:
+double RobotBattery::Deplete(__unused Position old_pos,
+   __unused Position new_pos, __unused double dt) {
+    int x_dist, y_dist;
+    double plan_dist, angle_difference;
+    x_dist = new_pos.x - old_pos.x;
+    y_dist = new_pos.y - old_pos.y;
+    plan_dist = sqrt(pow(x_dist, 2)+pow(y_dist, 2));
+    if (plan_dist == 0) {
+        angle_difference = 0;
+    } else {
+        angle_difference = asin(y_dist/plan_dist) * M_PI / 180;
+    }
+
+    charge_ = charge_ - (plan_dist * kLINEAR_SCALE_FACTOR
+          + angle_difference * kANGULAR_SCALE_FACTOR  + kBASE_DEPLETION) * dt;
+
+    if (charge_ < 0) {
+        charge_ = 0;
+    }
+
+    return charge_;
+}
